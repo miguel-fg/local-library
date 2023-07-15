@@ -31,13 +31,47 @@ AuthorSchema.virtual("url").get(function () {
 // Virtual to format DOB
 AuthorSchema.virtual("date_of_birth_formatted").get(function () {
     // Ignoring missing date cases
-    return this.date_of_birth ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED) : '';
+    return this.date_of_birth
+        ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(
+              DateTime.DATE_MED
+          )
+        : "";
 });
+
+// Virtual to format DOB in YYYY-MM-DD format
+AuthorSchema.virtual("date_of_birth_yyyy_mm_dd").get(function () {
+    return DateTime.fromJSDate(this.date_of_birth).toISODate();
+})
 
 // Virtual to format DOD
 AuthorSchema.virtual("date_of_death_formatted").get(function () {
     // Ignoring missing date cases
-    return this.date_of_death ? DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED) : '';
+    return this.date_of_death
+        ? DateTime.fromJSDate(this.date_of_death).toLocaleString(
+              DateTime.DATE_MED
+          )
+        : "";
+});
+
+// Virtual to format DOD in YYYY-MM-DD format
+AuthorSchema.virtual("date_of_death_yyyy_mm_dd").get(function () {
+    return DateTime.fromJSDate(this.date_of_death).toISODate();
+})
+
+// Virtual for lifespan
+AuthorSchema.virtual("lifespan").get(function () {
+    let dob_formatted = this.date_of_birth
+        ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(
+              DateTime.DATE_MED
+          )
+        : "";
+    let dod_formatted = this.date_of_death
+        ? DateTime.fromJSDate(this.date_of_death).toLocaleString(
+              DateTime.DATE_MED
+          )
+        : "";
+
+    return dob_formatted + " - " + dod_formatted;
 });
 
 // Export model
